@@ -9,13 +9,13 @@
     "build:webpack": "webpack --config webpack.config.js",
     "build:pkg": "pkg ./dist/s.js --target node18-linux-x64 --out-dir ./build --no-warnings",
     "build": "yarn clean && yarn build:webpack && yarn build:pkg",
-    "install": "sudo cp ./build/s /usr/local/bin",
+    "setup": "sudo cp ./build/s /usr/local/bin &7 sudo mkdir -p /etc/s && sudo cp ./config.json /etc/s/",
     "dev": "nodemon -q --exec 'ts-node' ./src/index.ts",
     "prepare": "husky install"
   },
   "lint-staged": {
     "./*.js": "prettier --write",
-    "src/**/*.{ts}": "eslint"
+    "src/**/*.ts": "eslint"
   },
   "devDependencies": {
     "@types/node": "^18.14.1",

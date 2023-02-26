@@ -191,7 +191,7 @@ export default class Search {
                         this.selectedIndex--;
                         this.redrawResults();
                     }
-                } else if (key.name === "return") {
+                } else if (key.name === "return" || key.name === "space") {
                     exec(`open ${this.results[this.selectedIndex].link}`);
                 } else if (key.name === "q" || (key.name === "escape" && !key.ctrl)) {
                     rl.close();
