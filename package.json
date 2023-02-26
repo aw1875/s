@@ -9,7 +9,7 @@
     "build:webpack": "webpack --config webpack.config.js",
     "build:pkg": "pkg ./dist/s.js --target node18-linux-x64 --out-dir ./build --no-warnings",
     "build": "yarn clean && yarn build:webpack && yarn build:pkg",
-    "setup": "sudo cp ./build/s /usr/local/bin &7 sudo mkdir -p /etc/s && sudo cp ./config.json /etc/s/",
+    "setup": "sudo cp ./build/s /usr/local/bin && sudo mkdir -p /etc/s && sudo cp ./config.json /etc/s/",
     "dev": "nodemon -q --exec 'ts-node' ./src/index.ts",
     "prepare": "husky install"
   },
