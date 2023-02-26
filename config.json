@@ -1,0 +1,9 @@
+{
+  "sites": [
+    "medium.com",
+    "stackoverflow.com",
+    "stackexchange.com"
+  ],
+  "results": 40,
+  "itemsPerPage": 5
+}
