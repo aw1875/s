@@ -1,4 +1,5 @@
 <h2 align="center">S - Terminal Search Tool</h2>
+<img src="images/s.png" />
 
 Search Google directly in your terminal finely grained based on what you like. Customize the sites you want results from and more.
 
