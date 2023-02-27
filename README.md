@@ -5,7 +5,13 @@ Search Google directly in your terminal finely grained based on what you like. C
 
 ## Setup
 
-Running 2 simple commands is all you need.
+To get S up and running, you first need to install all dependencies:
+
+```bash
+yarn install
+```
+
+Then, running 2 simple commands is all you need.
 
 ```bash
 yarn build
