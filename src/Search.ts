@@ -30,7 +30,7 @@ export default class Search {
 
     private createQuery(): void {
         // Create uri encoded string based on the query and config sites then replace spaces with +, ( with %28 and ) with %29
-        const searchQuery = encodeURIComponent(`${this.query} (site:${this.config.sites.join(' | ')})`)
+        const searchQuery = encodeURIComponent(`${this.query} (${this.config.sites.map((s) => `site:${s}`).join(' | ')})`)
             .replace(/%20/g, '+')
             .replace(/\(/g, '%28')
             .replace(/\)/g, '%29');

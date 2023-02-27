@@ -56,7 +56,7 @@ declare class Search {
      * @param {Config} config - The configuration options for the search.
      * @returns {Search} A new Search object.
      */
-    constructor(query: string, config: Config);
+    constructor(query: string, config: Config): Search;
 
     /**
      * @name resolve
