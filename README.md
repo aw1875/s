@@ -12,6 +12,8 @@ yarn build
 yarn setup
 ```
 
+*If you get permission issues running `yarn setup` try running it with sudo as `sudo yarn setup`*
+
 ## Using S
 
 After installing S, to use it all you need to do is type s `[your query]` in your terminal. For example:
