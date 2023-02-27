@@ -91,7 +91,7 @@ export default class Search {
 
         // Show Controls
         console.log('****************************************************************');
-        console.log(`*                          ${chalk.bold('Controls')}                            *`);
+        console.log(`*                          ${chalk.bold.italic('Controls')}                            *`);
         console.log('*                                                              *');
         console.log('* j - down                                              k - up *')
         console.log('* n - next page                              p - previous page *');
@@ -154,7 +154,7 @@ export default class Search {
 
         let i = 0;
         this.spinnerTimer = setInterval(() => {
-            stdout.write(`\r${characters[i++]} Searching for: ${chalk.cyan(this.query)}`);
+            stdout.write(`\r${chalk.blue(characters[i++])} Searching for: ${chalk.cyan(this.query)}`);
             i = i >= characters.length ? 0 : i;
         }, 150);
     }
