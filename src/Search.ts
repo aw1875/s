@@ -1,6 +1,4 @@
 // External Imports
-import * as cheerio from 'cheerio';
-import axios from 'axios';
 import chalk from 'chalk';
 
 // Node Imports
@@ -8,83 +6,25 @@ import { stdout } from 'process';
 import readline from 'readline';
 import { exec } from 'child_process';
 
+// Search Engines
+import DuckDuckGo from './DuckDuckGo';
+import Google from './Google';
+
 // Types
 import { SearchResult } from '../@types/SearchResult';
 import { Config } from '../@types/Config';
-
-const BASE_URL = "https://www.google.com/search?q=";
 
 export default class Search {
     // Private Variables
     private query: string;
     private searchPage: number;
     private page: number;
-    private url: string;
-    private html: string;
     private spinnerTimer: NodeJS.Timeout | null;
     private selectedIndex: number;
     private config: Config;
 
     // Public Variables
     results: SearchResult[];
-
-    private createQuery(): void {
-        // Create uri encoded string based on the query and config sites then replace spaces with +, ( with %28 and ) with %29
-        const searchQuery = encodeURIComponent(`${this.query} (${this.config.sites.map((s) => `site:${s}`).join(' | ')})`)
-            .replace(/%20/g, '+')
-            .replace(/\(/g, '%28')
-            .replace(/\)/g, '%29');
-
-        this.url = `${BASE_URL}${searchQuery}&start=${this.searchPage * this.config.itemsPerPage}`;
-    }
-
-    private async getPage(): Promise<void> {
-        const { data } = await axios.get(this.url, {
-            headers: {
-                Accept: '*/*',
-                'Accept-Encoding': 'text/html; charset=UTF-8',
-                'Accept-Language': 'en-US,en;q=0.9',
-                Referer: 'https://www.google.com/',
-                'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36'
-            },
-        });
-
-        this.html = data;
-    }
-
-    private getResults(): void {
-        const $ = cheerio.load(this.html);
-        const titles: string[] = [];
-        const links: string[] | undefined[] = [];
-        const snippets: string[] = [];
-
-        // Get Titles
-        $('.yuRUbf > a > h3').each((i, el) => {
-            titles[i] = $(el).text();
-        });
-
-        // Get Links
-        $('.yuRUbf > a').each((i, el) => {
-            links[i] = $(el).attr('href');
-        });
-
-        // Get Snippets
-        $('.g .VwiC3b').each((i, el) => {
-            snippets[i] = $(el).text().replace(/^.*?—\s+/, '');
-        });
-
-        // Create array of all info as SearchResult objects
-        const results: SearchResult[] = [];
-        for (let i = 0; i < titles.length; i++) {
-            results[i] = {
-                title: titles[i],
-                link: links[i],
-                snippet: snippets[i],
-            }
-        }
-
-        this.results.push(...results);
-    }
 
     private redrawResults(): void {
         console.clear();
@@ -98,7 +38,7 @@ export default class Search {
         console.log('* return/space - open                             q/esc - quit *');
         console.log('****************************************************************');
 
-        console.log(`Your results for ${chalk.blue(this.query)} (page ${this.page} / ${Math.ceil(this.results.length / this.config.itemsPerPage)})\n`);
+        console.log(`${this.config.searchEngine === 'google' ? 'Google' : 'DuckDuckGo'} results for ${chalk.blue(this.query)} (page ${this.page} / ${Math.ceil(this.results.length / this.config.itemsPerPage)})\n`);
 
         // Show Results
         const startIndex = (this.page - 1) * this.config.itemsPerPage;
@@ -118,8 +58,6 @@ export default class Search {
         this.query = query;
         this.searchPage = 0;
         this.page = 1;
-        this.url = "";
-        this.html = "";
         this.spinnerTimer = null;
         this.selectedIndex = 0;
         this.config = config;
@@ -129,16 +67,16 @@ export default class Search {
     resolve: ((value: SearchResult | PromiseLike<SearchResult>) => void) | undefined;
 
     async search(): Promise<void> {
+        const s = this.config.searchEngine == 'google' ? new Google() : new DuckDuckGo();
         this.startSpinner();
 
         // Get all results until we've reached the config amount of items to find
-        while (this.results.length <= this.config.results - this.config.itemsPerPage) {
-            this.createQuery();
-            await this.getPage();
-            this.getResults();
+        while (s.results.length <= this.config.results - this.config.itemsPerPage) {
+            await s.search(this.query, this.searchPage, this.config.sites);
             this.searchPage++;
         }
 
+        this.results = s.results;
         this.stopSpinner();
 
         setTimeout(() => this.showResults(), 1000)

@@ -1,7 +1,7 @@
 <h2 align="center">S - Terminal Search Tool</h2>
 <img src="images/s.png" />
 
-Search Google directly in your terminal finely grained based on what you like. Customize the sites you want results from and more.
+Search Google or DuckDuckGo directly in your terminal finely grained based on what you like. Customize the sites you want results from and more.
 
 ## Setup
 
@@ -44,8 +44,25 @@ Although there is a controls output that tells you the movements, here is what y
 
 ## Config
 
-This package comes with a default config.json file that will be located at /etc/s/config.json once installed. You can edit this file to better suit your needs. The config has 3 sections that are customizable.
+This package comes with a default config.json file that will be located at /etc/s/config.json once installed. You can edit this file to better suit your needs. The config has 4 sections that are customizable.
 
 `sites` - An array of strings that your results will be based on<br/>
 `results` - A number for the amount of results you want<br/>
-`itemsPerPage` - A number for the number of items you want shown on each page
+`itemsPerPage` - A number for the number of items you want shown on each page<br/>
+`searchEngine` - Either `google` or `duckduckgo`
+
+An example config for Google would look like this:
+
+```json
+{
+  "sites": [
+    "stackoverflow.com",
+    "stackexchange.com"
+  ],
+  "results": 30,
+  "itemsPerPage": 5,
+  "searchEngine": "google"
+}
+```
+
+See [config.json](https://github.com/aw1875/s/blob/master/config.json) for an example.
