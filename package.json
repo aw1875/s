@@ -1,5 +1,5 @@
 {
-  "name": "node-search-cli",
+  "name": "s",
   "version": "1.0.0",
   "main": "./dist/src/index.js",
   "license": "MIT",
@@ -9,7 +9,6 @@
     "build:pkg": "pkg ./dist/s.js --target node18-linux-x64 --out-dir ./build --no-warnings",
     "build": "yarn clean && yarn build:webpack && yarn build:pkg",
     "clean": "rm -rf ./build",
-    "dev": "nodemon -q --exec 'ts-node' ./src/index.ts",
     "prepare": "husky install",
     "setup": "sudo cp ./build/s /usr/local/bin && sudo mkdir -p /etc/s && sudo cp ./config.json /etc/s/"
   },
@@ -24,7 +23,6 @@
     "eslint": "^8.35.0",
     "husky": "^8.0.0",
     "lint-staged": "^13.1.2",
-    "nodemon": "^2.0.20",
     "pkg": "^5.8.0",
     "prettier": "^2.8.4",
     "ts-loader": "^9.4.2",
